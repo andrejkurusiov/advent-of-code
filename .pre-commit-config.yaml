@@ -1,15 +1,15 @@
 # .pre-commit-config.yaml
 # pre-commit does not support "rev: stable" properly; run "pre-commit autoupdate" to fix it.
-default_stages: [commit, merge-commit, push, manual]
+default_stages: [pre-commit, pre-merge-commit, pre-push, manual]
 default_install_hook_types: [pre-commit, pre-merge-commit, pre-push, prepare-commit-msg, commit-msg, post-checkout, post-commit, post-merge, post-rewrite]
 repos:
 -   repo: https://github.com/Yelp/detect-secrets
     # can use `rev: stable` initially
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
       - id: detect-secrets
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
     -   id: detect-private-key
     -   id: fix-encoding-pragma
@@ -21,20 +21,19 @@ repos:
     -   id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
     -   id: end-of-file-fixer
--   repo: https://github.com/psf/black
-    rev: 23.12.0
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.14.7
+  hooks:
+    - id: ruff
+      args: [ --fix ] # --config=pyproject.toml is implied by default
+    - id: ruff-format
+-   repo: local
     hooks:
-    -   id: black
-        language: python
-        args: [--config=pyproject.toml]
-        files: \.py$
--   repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
-    hooks:
-    -   id: flake8
-        language: python
-        additional_dependencies: [flake8-pyproject]
-        files: \.py$
+      - id: ty
+        name: Run ty type checker
+        entry: uv run ty check
+        language: system
+        types: [python]
 # post-commit hook; needs the script to be placed in the repo
 -   repo: local
     hooks:

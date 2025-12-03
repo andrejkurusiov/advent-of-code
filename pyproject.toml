@@ -1,11 +1,37 @@
-[tool.black]
-line_length = 88
-skip-string-normalization = true
-target_version = ['py311', 'py312']
+[project]
+name = "advent-of-code"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+]
 
-[tool.flake8]
-max-line-length = 88
-inline-quotes = 'single'
-extend-ignore = ['E203', 'E266', 'E402', 'E501', 'W503', 'D100', 'DAR101', 'DAR201']
-exclude = ['**/migrations/*.py', '**/venv/*', '**/__pycache__/*', '**/docs/*']
-plugins = ['flake8-builtins', 'flake8-quotes', 'darglint', 'flake8-mutable', 'flake8-bandit', 'flake8-pyproject']
+[dependency-groups]
+dev = [
+    "pre-commit>=4.5.0",
+    "ty>=0.0.1a29",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.format]
+quote-style = "single" # or "double"
+
+[tool.ruff.lint]
+# https://docs.astral.sh/ruff/rules/
+select = [
+    "A",    # warn about shadowing built-ins
+    "E",    # style stuff, whitespaces
+    "F",    # important pyflakes lints
+    "I",    # import sorting
+    "N",    # naming
+    "T100", # breakpoints
+]
+extend-select = ["I"]
+ignore = ["E501"] # line too long
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
